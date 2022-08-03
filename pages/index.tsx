@@ -11,6 +11,7 @@ import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import { FaSun, FaMoon } from "react-icons/fa"
 import TodoList from "../components/TodoList"
+import AddTodo from "../components/AddTodo"
 
 const Home: NextPage = () => {
   return (
@@ -31,6 +32,7 @@ const Home: NextPage = () => {
         Chakra UI Todo
       </Heading>
       <TodoList />
+      <AddTodo />
     </VStack>
   )
 }
