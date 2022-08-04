@@ -1,6 +1,6 @@
-import { Heading, IconButton, VStack } from "@chakra-ui/react"
+import { Heading, IconButton, useColorMode, VStack } from "@chakra-ui/react"
 import type { NextPage } from "next"
-import { FaSun } from "react-icons/fa"
+import { FaMobile, FaMoon, FaSun } from "react-icons/fa"
 import TodoList from "../components/TodoList"
 import AddTodo from "../components/AddTodo"
 import { useEffect, useRef, useState } from "react"
@@ -37,14 +37,17 @@ const Home: NextPage = () => {
     setTodos([...todos, todo])
   }
 
+  const { colorMode, toggleColorMode } = useColorMode()
+
   return (
     <VStack p={4} spacing='8'>
       <IconButton
-        icon={<FaSun />}
+        icon={colorMode === "light" ? <FaSun /> : <FaMoon />}
         aria-label={"mode color"}
         size='lg'
         isRound
         alignSelf='flex-end'
+        onClick={toggleColorMode}
       />
       <Heading
         size='2xl'
