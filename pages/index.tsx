@@ -1,32 +1,42 @@
-import {
-  Box,
-  Heading,
-  IconButton,
-  StackDivider,
-  VStack,
-} from "@chakra-ui/react"
+import { Heading, IconButton, VStack } from "@chakra-ui/react"
 import type { NextPage } from "next"
-import Head from "next/head"
-import Image from "next/image"
-import styles from "../styles/Home.module.css"
-import { FaSun, FaMoon } from "react-icons/fa"
+import { FaSun } from "react-icons/fa"
 import TodoList from "../components/TodoList"
 import AddTodo from "../components/AddTodo"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const Home: NextPage = () => {
-  const init = [
-    { id: 1, body: "lorem" },
-    { id: 2, body: "ipsum" },
-  ]
-  const [todos, setTodos] = useState(init)
+  const [todos, setTodos]: any = useState([])
+  const didMount = useRef(false)
 
-  function deleteTodo(id: any) {
-    const newTodos = todos.filter((todo: any) => {
+  useEffect(() => {
+    const init = localStorage.getItem("todos")
+    if (init) {
+      setTodos(JSON.parse(init))
+    }
+  }, [])
+
+  useEffect(() => {
+    // Return early, if this is the first render:
+    if (!didMount.current) {
+      didMount.current = true
+      return
+    }
+    // Paste code to be executed on subsequent renders:
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
+
+  async function deleteTodo(id: any) {
+    const newTodos = await todos.filter((todo: any) => {
       return todo.id !== id
     })
     setTodos(newTodos)
   }
+
+  async function addTodo(todo: any) {
+    setTodos([...todos, todo])
+  }
+
   return (
     <VStack p={4} spacing='8'>
       <IconButton
@@ -44,7 +54,7 @@ const Home: NextPage = () => {
         Chakra UI Todo
       </Heading>
       <TodoList data={todos} deleteTodo={deleteTodo} />
-      <AddTodo />
+      <AddTodo addTodo={addTodo} />
     </VStack>
   )
 }
