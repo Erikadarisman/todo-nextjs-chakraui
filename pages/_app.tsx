@@ -1,25 +1,18 @@
-// pages/_app.js
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
+import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react"
 
-// 1. Import the extendTheme function
-import { extendTheme } from "@chakra-ui/react"
-
-// 2. Extend the theme to include custom colors, fonts, etc
-const colors = {
-  brand: {
-    900: "#1a365d",
-    800: "#153e75",
-    700: "#2a69ac",
-  },
+const config = {
+  initialColorMode: "light",
+  useSystemColorMode: false,
 }
 
-const theme = extendTheme({ colors })
+const theme = extendTheme({
+  config,
+})
 
-// 3. Pass the `theme` prop to the `ChakraProvider`
 function MyApp({ Component, pageProps }: any) {
   return (
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode='light'/>
+    <ChakraProvider>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Component {...pageProps} />
     </ChakraProvider>
   )
